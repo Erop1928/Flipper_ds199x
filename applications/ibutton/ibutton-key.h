@@ -15,7 +15,7 @@ public:
     char* get_name();
 
     void set_type(iButtonKeyType key_type);
-    void set_ds_type(DallasKeyType _ds_type);
+    void set_ds_type(DallasKeyType ds_type);
 
     iButtonKeyType get_key_type();
     DallasKeyType get_ds_type();

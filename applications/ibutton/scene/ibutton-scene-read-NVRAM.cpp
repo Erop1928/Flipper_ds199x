@@ -2,6 +2,7 @@
 #include "../ibutton-app.h"
 #include "../ibutton-view-manager.h"
 #include "../ibutton-event.h"
+#include "../helpers/key-read-NVRAM.h"
 #include <callback-connector.h>
 
 void iButtonSceneReadSuccess::on_enter(iButtonApp* app) {
@@ -9,60 +10,11 @@ void iButtonSceneReadSuccess::on_enter(iButtonApp* app) {
     DialogEx* dialog_ex = view_manager->get_dialog_ex();
     auto callback = cbc::obtain_connector(this, &iButtonSceneReadSuccess::dialog_ex_callback);
 
-    iButtonKey* key = app->get_key();
-    uint8_t* key_data = key->get_data();
 
-    switch(key->get_key_type()) {
-    case iButtonKeyType::KeyDallas:
-      switch(key->get_ds_type()) {
-        case DallasKeyType::Ds1990:
-          app->set_text_store(
+    uint8_t* key_data[8192] = NVRAMReader::read_NVRAM
 
-            "Dallas 1990\n%02X %02X %02X %02X\n%02X %02X %02X %02X",
-            key_data[0],
-            key_data[1],
-            key_data[2],
-            key_data[3],
-            key_data[4],
-            key_data[5],
-            key_data[6],
-            key_data[7]);
-            break;
-        case DallasKeyType::Ds1992:
-          app->set_text_store(
-
-            "Dallas 1992\n%02X %02X %02X %02X\n%02X %02X %02X %02X",
-            key_data[0],
-            key_data[1],
-            key_data[2],
-            key_data[3],
-            key_data[4],
-            key_data[5],
-            key_data[6],
-            key_data[7]);
-          break;
-        case DallasKeyType::Ds1995:
-          app->set_text_store(
-
-            "Dallas 1995\n%02X %02X %02X %02X\n%02X %02X %02X %02X",
-            key_data[0],
-            key_data[1],
-            key_data[2],
-            key_data[3],
-            key_data[4],
-            key_data[5],
-            key_data[6],
-            key_data[7]);
-          break;
-      }
-      break;
-    case iButtonKeyType::KeyCyfral:
-        app->set_text_store("Cyfral\n%02X %02X", key_data[0], key_data[1]);
-        break;
-    case iButtonKeyType::KeyMetakom:
-        app->set_text_store(
-            "Metakom\n%02X %02X %02X %02X", key_data[0], key_data[1], key_data[2], key_data[3]);
-        break;
+    app->set_text_store(
+        "\n%02X %02X %02X %02X", key_data[0], key_data[1], key_data[2], key_data[3]);
     }
 
     dialog_ex_set_text(dialog_ex, app->get_text_store(), 95, 30, AlignCenter, AlignCenter);

@@ -16,7 +16,7 @@ static const char* test_int_key = "Int32 data";
 static const int32_t test_int_data[] = {1234, -6345, 7813, 0};
 static const int32_t test_int_updated_data[] = {-1337, 69};
 
-static const char* test_uint_key = "Uint32 data";
+static const char* test_uint_key = "Uint32 data";#include "../minunit.h"
 static const uint32_t test_uint_data[] = {1234, 0, 5678, 9098, 7654321};
 static const uint32_t test_uint_updated_data[] = {8, 800, 555, 35, 35};
 

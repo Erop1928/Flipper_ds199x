@@ -9,6 +9,7 @@ enum class iButtonKeyType : uint8_t {
     KeyCyfral,
     KeyMetakom,
 };
+
 enum class DallasKeyType : uint8_t {
     Ds1990,
     Ds1992,

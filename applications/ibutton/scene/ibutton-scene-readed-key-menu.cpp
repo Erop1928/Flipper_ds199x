@@ -3,8 +3,11 @@
 #include "../ibutton-view-manager.h"
 #include "../ibutton-event.h"
 #include <callback-connector.h>
+#include "../helpers/key-info.h"
+
 
 typedef enum {
+    SubmenuIndexFeatures,
     SubmenuIndexWrite,
     SubmenuIndexEmulate,
     SubmenuIndexNameAndSave,
@@ -12,10 +15,13 @@ typedef enum {
 } SubmenuIndex;
 
 void iButtonSceneReadedKeyMenu::on_enter(iButtonApp* app) {
+    iButtonKey* key = app->get_key();
     iButtonAppViewManager* view_manager = app->get_view_manager();
     Submenu* submenu = view_manager->get_submenu();
     auto callback = cbc::obtain_connector(this, &iButtonSceneReadedKeyMenu::submenu_callback);
-
+    if (key->get_key_type() == iButtonKeyType::KeyDallas && key->get_ds_type() != DallasKeyType::Ds1990){
+      submenu_add_item(submenu, "Dallas key features", SubmenuIndexFeatures, callback, app);
+    }
     submenu_add_item(submenu, "Write", SubmenuIndexWrite, callback, app);
     submenu_add_item(submenu, "Name and save", SubmenuIndexNameAndSave, callback, app);
     submenu_add_item(submenu, "Emulate", SubmenuIndexEmulate, callback, app);
@@ -31,6 +37,9 @@ bool iButtonSceneReadedKeyMenu::on_event(iButtonApp* app, iButtonEvent* event) {
     if(event->type == iButtonEvent::Type::EventTypeMenuSelected) {
         submenu_item_selected = event->payload.menu_index;
         switch(event->payload.menu_index) {
+        case SubmenuIndexFeatures:
+            app->switch_to_next_scene(iButtonApp::Scene::SceneDS199xMenu);
+            break;
         case SubmenuIndexWrite:
             app->switch_to_next_scene(iButtonApp::Scene::SceneWrite);
             break;
